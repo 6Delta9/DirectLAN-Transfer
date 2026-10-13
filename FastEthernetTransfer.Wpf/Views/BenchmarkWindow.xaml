@@ -1,0 +1,130 @@
+<Window x:Class="FastEthernetTransfer.Wpf.Views.BenchmarkWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Performance Benchmark - Fast Ethernet Transfer"
+        Height="540" Width="720"
+        WindowStartupLocation="CenterOwner"
+        Background="{StaticResource BgDarkBrush}"
+        Foreground="{StaticResource TextPrimaryBrush}"
+        Icon="pack://application:,,,/newappicon.ico">
+
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,20">
+            <TextBlock Text="⚡ Performance &amp; Throughput Benchmark"
+                       FontSize="20" FontWeight="Bold"
+                       Foreground="{StaticResource TextPrimaryBrush}" />
+            <TextBlock Text="Measures sequential NVMe/SSD read &amp; write speeds alongside pure TCP network socket bandwidth to identify transfer bottlenecks."
+                       FontSize="13" Foreground="{StaticResource TextSecondaryBrush}"
+                       Margin="0,4,0,0" TextWrapping="Wrap" />
+        </StackPanel>
+
+        <!-- Benchmark Metric Grid -->
+        <Grid Grid.Row="1" Margin="0,0,0,20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!-- Active Ethernet Link Badge -->
+            <Border Grid.Row="0" Background="#162032" CornerRadius="8" Padding="14,10" Margin="0,0,0,16" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="Active Adapter: " Foreground="{StaticResource TextSecondaryBrush}" FontSize="13" />
+                        <TextBlock Text="{Binding AdapterName}" FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryBrush}" FontSize="13" />
+                    </StackPanel>
+
+                    <Border Grid.Column="1" Background="#064E3B" CornerRadius="12" Padding="12,4">
+                        <StackPanel Orientation="Horizontal">
+                            <Ellipse Width="7" Height="7" Fill="{StaticResource AccentEmeraldBrush}" Margin="0,0,6,0" VerticalAlignment="Center" />
+                            <TextBlock Text="{Binding LinkSpeedFormatted}" FontWeight="Bold" Foreground="{StaticResource AccentEmeraldBrush}" FontSize="12" />
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Border>
+
+            <!-- Metric Cards (2x2) -->
+            <UniformGrid Grid.Row="1" Columns="2" Rows="2">
+                <!-- Disk Read -->
+                <Border Style="{StaticResource GlassCard}" Margin="0,0,8,8">
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="DISK READ SPEED" FontSize="11" FontWeight="SemiBold" Foreground="{StaticResource TextMutedBrush}" />
+                        <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                            <TextBlock Text="{Binding DiskReadMBs, StringFormat='{}{0:F1}'}" FontSize="28" FontWeight="Bold" Foreground="{StaticResource AccentCyanBrush}" />
+                            <TextBlock Text=" MB/s" FontSize="14" Foreground="{StaticResource TextSecondaryBrush}" VerticalAlignment="Bottom" Margin="4,0,0,4" />
+                        </StackPanel>
+                        <TextBlock Text="Sequential async read from storage" FontSize="11" Foreground="{StaticResource TextMutedBrush}" Margin="0,2,0,0" />
+                    </StackPanel>
+                </Border>
+
+                <!-- Disk Write -->
+                <Border Style="{StaticResource GlassCard}" Margin="8,0,0,8">
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="DISK WRITE SPEED" FontSize="11" FontWeight="SemiBold" Foreground="{StaticResource TextMutedBrush}" />
+                        <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                            <TextBlock Text="{Binding DiskWriteMBs, StringFormat='{}{0:F1}'}" FontSize="28" FontWeight="Bold" Foreground="{StaticResource AccentCyanBrush}" />
+                            <TextBlock Text=" MB/s" FontSize="14" Foreground="{StaticResource TextSecondaryBrush}" VerticalAlignment="Bottom" Margin="4,0,0,4" />
+                        </StackPanel>
+                        <TextBlock Text="Sequential async write to storage" FontSize="11" Foreground="{StaticResource TextMutedBrush}" Margin="0,2,0,0" />
+                    </StackPanel>
+                </Border>
+
+                <!-- Network Loop / Peer Throughput -->
+                <Border Style="{StaticResource GlassCard}" Margin="0,8,8,0">
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="NETWORK SOCKET THROUGHPUT" FontSize="11" FontWeight="SemiBold" Foreground="{StaticResource TextMutedBrush}" />
+                        <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                            <TextBlock Text="{Binding NetworkMBs, StringFormat='{}{0:F1}'}" FontSize="28" FontWeight="Bold" Foreground="{StaticResource AccentEmeraldBrush}" />
+                            <TextBlock Text=" MB/s" FontSize="14" Foreground="{StaticResource TextSecondaryBrush}" VerticalAlignment="Bottom" Margin="4,0,0,4" />
+                        </StackPanel>
+                        <TextBlock Text="Pure TCP socket streaming rate" FontSize="11" Foreground="{StaticResource TextMutedBrush}" Margin="0,2,0,0" />
+                    </StackPanel>
+                </Border>
+
+                <!-- End to End Throughput -->
+                <Border Style="{StaticResource GlassCard}" Margin="8,8,0,0">
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="END-TO-END SUSTAINABLE" FontSize="11" FontWeight="SemiBold" Foreground="{StaticResource TextMutedBrush}" />
+                        <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                            <TextBlock Text="{Binding EndToEndMBs, StringFormat='{}{0:F1}'}" FontSize="28" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}" />
+                            <TextBlock Text=" MB/s" FontSize="14" Foreground="{StaticResource TextSecondaryBrush}" VerticalAlignment="Bottom" Margin="4,0,0,4" />
+                        </StackPanel>
+                        <TextBlock Text="Storage + TCP pipelined throughput" FontSize="11" Foreground="{StaticResource TextMutedBrush}" Margin="0,2,0,0" />
+                    </StackPanel>
+                </Border>
+            </UniformGrid>
+
+            <!-- Status readout -->
+            <Border Grid.Row="2" Background="#111827" CornerRadius="6" Padding="12,8" Margin="0,14,0,0" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1">
+                <TextBlock Text="{Binding StatusMessage}" FontSize="12" Foreground="{StaticResource AccentCyanBrush}" />
+            </Border>
+        </Grid>
+
+        <!-- Footer Buttons -->
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="1" Content="🚀 Run Full Benchmark"
+                    Style="{StaticResource PrimaryButton}"
+                    Command="{Binding StartBenchmarkCommand}" />
+        </Grid>
+    </Grid>
+</Window>

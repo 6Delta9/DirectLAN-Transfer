@@ -1,0 +1,148 @@
+<Window x:Class="FastEthernetTransfer.Wpf.Views.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:models="clr-namespace:FastEthernetTransfer.Core.Models;assembly=FastEthernetTransfer.Core"
+        mc:Ignorable="d"
+        Title="Settings - Fast Ethernet Transfer"
+        Height="620" Width="640"
+        WindowStartupLocation="CenterOwner"
+        Background="{StaticResource BgDarkBrush}"
+        Foreground="{StaticResource TextPrimaryBrush}"
+        Icon="pack://application:,,,/newappicon.ico">
+
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,20">
+            <TextBlock Text="⚙ Settings &amp; Configuration"
+                       FontSize="20" FontWeight="Bold"
+                       Foreground="{StaticResource TextPrimaryBrush}" />
+            <TextBlock Text="Fine-tune network transfer pipelines, buffer sizes, and security options."
+                       FontSize="13" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,4,0,0" />
+        </StackPanel>
+
+        <!-- Settings Scrollable Content -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="0,0,10,0">
+
+                <!-- PC Identity -->
+                <Border Style="{StaticResource GlassCard}" Margin="0,0,0,16">
+                    <StackPanel>
+                        <TextBlock Text="PC IDENTITY &amp; NETWORK" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource AccentCyanBrush}" Margin="0,0,0,12" />
+
+                        <TextBlock Text="Device Name (broadcast to peers):" FontSize="13" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4" />
+                        <TextBox Text="{Binding DeviceName, UpdateSourceTrigger=PropertyChanged}"
+                                 Background="#0E1420" Foreground="{StaticResource TextPrimaryBrush}"
+                                 BorderBrush="{StaticResource BorderBrush}" Padding="10,8" Margin="0,0,0,12" />
+
+                        <TextBlock Text="Listening TCP Port:" FontSize="13" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4" />
+                        <TextBox Text="{Binding TcpPort, UpdateSourceTrigger=PropertyChanged}"
+                                 Background="#0E1420" Foreground="{StaticResource TextPrimaryBrush}"
+                                 BorderBrush="{StaticResource BorderBrush}" Padding="10,8" Margin="0,0,0,4" />
+                        <TextBlock Text="Default: 45779. Ensure port is allowed in your local network firewall."
+                                   FontSize="11" Foreground="{StaticResource TextMutedBrush}" />
+                    </StackPanel>
+                </Border>
+
+                <!-- Storage & Downloads -->
+                <Border Style="{StaticResource GlassCard}" Margin="0,0,0,16">
+                    <StackPanel>
+                        <TextBlock Text="STORAGE &amp; DOWNLOADS" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource AccentCyanBrush}" Margin="0,0,0,12" />
+
+                        <TextBlock Text="Default Save Location:" FontSize="13" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4" />
+                        <Grid Margin="0,0,0,12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBox Grid.Column="0" Text="{Binding DefaultDownloadPath, UpdateSourceTrigger=PropertyChanged}"
+                                     Background="#0E1420" Foreground="{StaticResource TextPrimaryBrush}"
+                                     BorderBrush="{StaticResource BorderBrush}" Padding="10,8" />
+                            <Button Grid.Column="1" Content="Browse..."
+                                    Style="{StaticResource SecondaryButton}"
+                                    Command="{Binding BrowseDownloadPathCommand}" Margin="8,0,0,0" />
+                        </Grid>
+
+                        <TextBlock Text="File Conflict Resolution:" FontSize="13" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4" />
+                        <ComboBox SelectedItem="{Binding ConflictResolution}"
+                                  Background="#0E1420" Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,4">
+                            <models:ConflictResolution>Ask</models:ConflictResolution>
+                            <models:ConflictResolution>Replace</models:ConflictResolution>
+                            <models:ConflictResolution>Rename</models:ConflictResolution>
+                            <models:ConflictResolution>Skip</models:ConflictResolution>
+                        </ComboBox>
+                    </StackPanel>
+                </Border>
+
+                <!-- Transfer Engine & Throughput -->
+                <Border Style="{StaticResource GlassCard}" Margin="0,0,0,16">
+                    <StackPanel>
+                        <TextBlock Text="HIGH-SPEED PIPELINE PERFORMANCE" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource AccentCyanBrush}" Margin="0,0,0,12" />
+
+                        <TextBlock Text="I/O Buffer Size (Streaming Pipeline):" FontSize="13" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4" />
+                        <ComboBox ItemsSource="{Binding AvailableBufferSizes}" SelectedItem="{Binding BufferSizeBytes}"
+                                  Background="#0E1420" Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,4">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={x:Null}, StringFormat='{}{0} Bytes'}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <TextBlock Text="Recommended: 2 MB for 1 Gbps &amp; 2.5 Gbps; 4 MB - 8 MB for 10 Gbps Ethernet."
+                                   FontSize="11" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,12" />
+
+                        <TextBlock Text="SHA-256 Integrity Verification:" FontSize="13" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4" />
+                        <ComboBox SelectedItem="{Binding VerificationMode}"
+                                  Background="#0E1420" Foreground="{StaticResource TextPrimaryBrush}">
+                            <models:VerificationMode>Always</models:VerificationMode>
+                            <models:VerificationMode>SkipOver50GB</models:VerificationMode>
+                            <models:VerificationMode>Disabled</models:VerificationMode>
+                        </ComboBox>
+                    </StackPanel>
+                </Border>
+
+                <!-- Security & Diagnostics -->
+                <Border Style="{StaticResource GlassCard}" Margin="0,0,0,16">
+                    <StackPanel>
+                        <TextBlock Text="SECURITY &amp; SYSTEM" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource AccentCyanBrush}" Margin="0,0,0,12" />
+
+                        <CheckBox Content="Automatically accept incoming transfers from trusted peers"
+                                  IsChecked="{Binding AutoAcceptTrustedPeers}"
+                                  Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,12" />
+
+                        <TextBlock Text="Windows Firewall Configuration:" FontSize="13" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4" />
+                        <Grid Margin="0,0,0,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="{Binding FirewallStatus}" VerticalAlignment="Center"
+                                       Foreground="{StaticResource TextMutedBrush}" FontSize="12" />
+                            <Button Grid.Column="1" Content="Configure Firewall"
+                                    Style="{StaticResource SecondaryButton}"
+                                    Command="{Binding ConfigureFirewallCommand}" />
+                        </Grid>
+
+                        <Button Content="📜 Open Logs Folder"
+                                Style="{StaticResource SecondaryButton}"
+                                Command="{Binding OpenLogsCommand}" HorizontalAlignment="Left" Margin="0,4,0,0" />
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Footer -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
+            <Button Content="Save Settings"
+                    Style="{StaticResource PrimaryButton}"
+                    Command="{Binding SaveSettingsCommand}" />
+        </StackPanel>
+    </Grid>
+</Window>

@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\FastEthernetTransfer.Core\FastEthernetTransfer.Core.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <AssemblyName>FastEthernetTransfer</AssemblyName>
+    <AssemblyTitle>Fast Ethernet File Transfer</AssemblyTitle>
+    <Product>Fast Ethernet File Transfer</Product>
+    <Description>High-Speed PC-to-PC Ethernet File Transfer Application for Windows 10/11</Description>
+    <Version>2.0.0</Version>
+    <Authors>FastEthernetTransfer</Authors>
+    <ApplicationIcon>newappicon.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Resource Include="newappicon.ico" />
+    <Resource Include="appicon.ico" />
+  </ItemGroup>
+
+</Project>

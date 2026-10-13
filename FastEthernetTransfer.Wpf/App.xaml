@@ -1,0 +1,20 @@
+<Application x:Class="FastEthernetTransfer.Wpf.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:FastEthernetTransfer.Wpf.Converters"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles/Theme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <converters:BooleanToVisibilityConverter x:Key="BoolToVis" />
+            <converters:BooleanToVisibilityConverter x:Key="InverseBoolToVis" Invert="True" />
+            <converters:NullToVisibilityConverter x:Key="NullToVis" />
+            <converters:InverseBooleanConverter x:Key="InverseBool" />
+            <converters:EnumToVisibilityConverter x:Key="EnumToVis" />
+            <converters:EnumToBooleanConverter x:Key="EnumToBool" />
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
